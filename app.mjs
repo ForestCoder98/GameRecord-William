@@ -2,6 +2,7 @@ import Game from "./Models/Game.mjs";
 
 const local_Game_History = "SavedGames";
 let games = retrieveAllGameInfo();
+createVisual();
 
 function retrieveAllGameInfo() {
     let listOfAllGamesInfo = outputJson(retrieveAllLocalGames()||"[]");
@@ -47,6 +48,7 @@ function createVisual() {
         htmlBuffer += `<div class="gameEntry">${createGameInfoEntry(i)}</div>`;
     }
     document.getElementById("htmlOutput").innerHTML = htmlBuffer;
+    setupWatchers();
 }
 
 function createGameInfoEntry(index) {
@@ -62,6 +64,18 @@ function createGameInfoEntry(index) {
 function createGameInfoField(index, fieldName, fieldValue) {
     let fieldType = "text";
     return `<div class="field"><label>${fieldName}</label><input type="${fieldType}" data-index="${index}" data-name="${fieldName}" value="${fieldValue}" /></div>`;
+}
+
+function setupWatchers() {
+    let inputElements = document.querySelectorAll("#htmlOutput input");
+    for(let i = 0; i<inputElements.length;i++) {
+        inputElements[i].addEventListener("input", function(event) {
+            let inputElement = event.target;
+            games[inputElement.getAttribute("data-index")][inputElement.getAttribute("data-name")] = inputElement.value;
+            importJson(games);
+        });
+
+    }
 }
 
 document.getElementById("importSource").addEventListener("change", function(event) {

@@ -1,7 +1,7 @@
 import Game from "./Models/Game.mjs";
 
 const local_Game_History = "SavedGames";
-let games = listOfAllGamesInfo();
+let games = retrieveAllGameInfo();
 
 function retrieveAllGameInfo() {
     let listOfAllGamesInfo = outputJson(retrieveAllLocalGames()||"[]");
@@ -41,11 +41,36 @@ function importJson(gameFile) {
     saveToLocalStorage(JSON.stringify(gameFile));
 }
 
+function createVisual() {
+    let htmlBuffer = "";
+    for(let i=0;i<games.length;i++) {
+        htmlBuffer += `<div class="gameEntry">${createGameInfoEntry(i)}</div>`;
+    }
+    document.getElementById("htmlOutput").innerHTML = htmlBuffer;
+}
+
+function createGameInfoEntry(index) {
+    let gameEntry = games[index];
+    let fieldNames = Object.keys(gameEntry);
+    let buffer = "";
+    for(let i=0;i<fieldNames.length;i++) {
+        buffer += createGameInfoField(index, fieldNames[i], gameEntry[fieldNames[i]]);
+    }
+    return buffer;
+}
+
+function createGameInfoField(index, fieldName, fieldValue) {
+    let fieldType = "text";
+    return `<div class="field"><label>${fieldName}</label><input type="${fieldType}" data-index="${index}" data-name="${fieldName}" value="${fieldValue}" /></div>`;
+}
+
 document.getElementById("importSource").addEventListener("change", function(event) {
     let file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (evt) => {
         saveToLocalStorage(evt.target.result);
+        games = retrieveAllGameInfo();
+        createVisual();
     };
     reader.readAsText(file);
 });

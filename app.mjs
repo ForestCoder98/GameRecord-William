@@ -63,6 +63,9 @@ function createGameInfoEntry(index) {
 
 function createGameInfoField(index, fieldName, fieldValue) {
     let fieldType = "text";
+    if(fieldName==="personalRating") {
+        fieldType = "range";
+    }
     return `<div class="field"><label>${fieldName}</label><input type="${fieldType}" data-index="${index}" data-name="${fieldName}" value="${fieldValue}" /></div>`;
 }
 
@@ -77,6 +80,27 @@ function setupWatchers() {
 
     }
 }
+
+document.getElementById("addNewGameListingButton").addEventListener("click", function() {
+    let gameEntry = new Game(
+        document.getElementById("newGameEntry").value,
+        document.getElementById("newGameDesigner").value,
+        document.getElementById("newGameArtist").value,
+        document.getElementById("newGamePublisher").value,
+        document.getElementById("newGameYear").value,
+        document.getElementById("newGamePlayers").value,
+        document.getElementById("newGameTime").value,
+        document.getElementById("newGameDifficulty").value,
+        document.getElementById("newGameUrl").value,
+        document.getElementById("newGamePlayCount").value,
+        document.getElementById("newGamePersonalRating").value
+    );
+    games.push(gameEntry);
+    importJson(games);
+    createVisual();
+
+
+});
 
 document.getElementById("importSource").addEventListener("change", function(event) {
     let file = event.target.files[0];

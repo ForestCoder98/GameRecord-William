@@ -5,13 +5,29 @@
     <link rel="stylesheet" href="style.css" />
     <script src="app.mjs" type="module"></script>
 </head>
-
 <body>
+    <div class="flex-container">
+    <div id="htmlOutput" class="container"></div>
+    <div class="container">
 
     <input type="file" id="importSource" />
+    <div>
+        <label>title:</label><input id="newGameEntry" type="text" />
+        <label>Designer:</label><input id="newGameDesigner" type="text" />
+        <label>Artist:</label><input id="newGameArtist" type="text" />
+        <label>Publisher:</label><input id="newGamePublisher" type="text" />
+        <label>Year:</label><input id="newGameYear" type="number" />
+        <label>Players:</label><input id="newGamePlayers" type="text" />
+        <label>Time:</label><input id="newGameTime" type="text" />
+        <label>Difficulty:</label><input id="newGameDifficulty" type="text" />
+        <label>Url:</label><input id="newGameUrl" type="url" />
+        <label>Play Count:</label><input id="newGamePlayCount" type="number" />
+        <label>Personal Rating:</label><input id="newGamePersonalRating" type="range" min="0" max="10" />
+        >
+                        <button id="addNewGameListingButton">Add New Game Listing</button>
+                    </div>
+                 </div>
 
-    <div id="htmlOutput"></div>
-
-</body>
-
+        </div>
+    </body>
 </html>

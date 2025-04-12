@@ -1,0 +1,10 @@
+.flex-container {
+    display: flex;
+}
+
+.flex-container .container {
+    flex: 50%;
+}
+label {
+    display: block;
+}

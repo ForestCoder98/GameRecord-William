@@ -58,6 +58,7 @@ function createGameInfoEntry(index) {
     for(let i=0;i<fieldNames.length;i++) {
         buffer += createGameInfoField(index, fieldNames[i], gameEntry[fieldNames[i]]);
     }
+    buffer += `<button data-index="${index}">Delete</button>`;
     return buffer;
 }
 
@@ -77,9 +78,51 @@ function setupWatchers() {
             games[inputElement.getAttribute("data-index")][inputElement.getAttribute("data-name")] = inputElement.value;
             importJson(games);
         });
-
+    }
+    let deleteButtons = document.querySelectorAll("#htmlOutput button");
+    for(let i = 0;i<deleteButtons.length;i++) {
+        deleteButtons[i].addEventListener("click", function(event) {
+            let temporaryGamesList = [];
+            for(let j = 0;j<games.length;j++) {
+                if(j!=event.target.getAttribute("data-index")) {
+                    temporaryGamesList.push(games[j]);
+                }
+            }
+            games = temporaryGamesList;
+            importJson(games);
+            createVisual();
+        });
     }
 }
+
+function sortBy(array, fieldName) {
+    array.sort(function(a, b) {
+        if(a[fieldName]<b[fieldName])
+            return -1;
+        else
+            return 1;
+    });
+}
+
+document.getElementById("sortByPlayers").addEventListener("click", function() {
+    sortBy(games, "players");
+    createVisual();
+});
+
+document.getElementById("sortByPersonalRating").addEventListener("click", function() {
+    sortBy(games, "personalRating");
+    createVisual();
+});
+
+document.getElementById("sortByDifficulty").addEventListener("click", function() {
+    sortBy(games, "difficulty");
+    createVisual();
+});
+
+document.getElementById("sortByPlayCount").addEventListener("click", function() {
+    sortBy(games, "playCount");
+    createVisual();
+});
 
 document.getElementById("addNewGameListingButton").addEventListener("click", function() {
     let gameEntry = new Game(
